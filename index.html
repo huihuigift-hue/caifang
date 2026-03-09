@@ -74,14 +74,8 @@ padding: 24px; }
 
   <div id="outputSection" class="output-section" style="display:none">
     <div class="output-block">
-      <h2>🎙️  采访问题库</h2>
-      <div class="output-content" id="out1"></div>
-      <button class="copy-btn" onclick="copy('out1', this)">复制</button>
-    </div>
-    <div class="output-block">
-      <h2>📢 开场白 & 结束语</h2>
-      <div class="output-content" id="out2"></div>
-      <button class="copy-btn" onclick="copy('out2', this)">复制</button>
+      <div class="output-content" id="outputAll"></div>
+      <button class="copy-btn" onclick="copyAll(this)">复制全部内容</button>
     </div>
   </div>
 </div>
@@ -167,8 +161,7 @@ async function generate() {
     const text = data.content[0].text;
     const parts = text.split('---SPLIT---').map(s => s.trim());
 
-    document.getElementById('out1').textContent = parts[0] || '';
-    document.getElementById('out2').textContent = parts[1] || '';
+    document.getElementById('outputAll').textContent = parts[0] + '\n\n————————————————————————\n\n' + (parts[1] || '');
     document.getElementById('outputSection').style.display = 'block';
     document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth' });
 
@@ -180,11 +173,11 @@ async function generate() {
   }
 }
 
-function copy(id, btn) {
-  const text = document.getElementById(id).textContent;
+function copyAll(btn) {
+  const text = document.getElementById('outputAll').textContent;
   navigator.clipboard.writeText(text).then(() => {
     btn.textContent = '已复制 ✓';
-    setTimeout(() => btn.textContent = '复制', 1500);
+    setTimeout(() => btn.textContent = '复制全部内容', 1500);
   });
 }
 </script>
